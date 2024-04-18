@@ -3,7 +3,7 @@ import math
 from queue import PriorityQueue #Ayuda a calcular el numero menor al estar en una matriz
 
 WIDTH = 500 #alto de la ventana
-WIN = pygame.display.set_mode((WIDTH,WIDTH)) #El tamaño de la ventana 
+WIN = pygame.display.set_mode((WIDTH, WIDTH)) #El tamaño de la ventana 
 pygame.display.set_caption("Algoritmo a estrella")
 
 ROJO = (255, 0, 0)
@@ -85,7 +85,7 @@ class Spot:
         if self.col > 0 and not grid[self.row][self.col - 1].is_barrier():
             self.neighbords.append(grid[self.row][self.col - 1])
 
-    def __lt__(self, other):
+    def __ne__(self, other):
         return False
 
 
@@ -107,9 +107,9 @@ def algorithm(draw, grid, start, end):
     open_set = PriorityQueue()
     open_set.put((0, count, start))
     came_from = {}
-    g_score = {Spot: float("inf") for row in grid for spot in row}
+    g_score = {spot: float("inf") for row in grid for spot in row}
     g_score[start] = 0
-    f_score = {Spot: float("inf") for row in grid for spot in row}
+    f_score = {spot: float("inf") for row in grid for spot in row}
     f_score[start] = h(start.get_pos(), end.get_pos())
 
     open_set_hash = {start}
@@ -142,7 +142,7 @@ def algorithm(draw, grid, start, end):
 
         draw()
 
-        if current !=start:
+        if current != start:
             current.make_closed()
 
     return False
@@ -205,7 +205,7 @@ def main(win, width):
 
                 if pygame.mouse.get_pressed()[0]:
                     pos = pygame.mouse.get_pos()
-                    row , col = get_clicked_pos(pos, ROWS, width)
+                    row, col = get_clicked_pos(pos, ROWS, width)
                     spot = grid[row][col]
                     if not start and spot != end:
                         start = spot
@@ -220,7 +220,7 @@ def main(win, width):
 
                 elif pygame.mouse.get_pressed()[2]:
                     pos = pygame.mouse.get_pos()
-                    row , col = get_clicked_pos(pos, ROWS, width)
+                    row, col = get_clicked_pos(pos, ROWS, width)
                     spot = grid[row][col]
                     spot.reset()
                     if spot == start:
